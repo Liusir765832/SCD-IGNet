@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "DTP",
+            "type": "python",
+            "request": "launch",
+            "program": "./DTP-main/DTP-main/custom-tools/train.py",
+            "args": [
+                "./checkpoints/night/cfg.py"
+            ],
+            "console": "integratedTerminal",
+            "pythonPath": ".conda/envs/dtp/bin/python"  // 或者指向虚拟环境的路径
+        }
+    ]
+}
