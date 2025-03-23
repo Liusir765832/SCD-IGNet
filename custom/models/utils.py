@@ -11,9 +11,6 @@ from torch.autograd import Variable
 
 
 class StripPooling(nn.Module):
-    """
-    Reference:
-    """
     def __init__(self, in_channels, pool_size = (2, 4), norm_layer=nn.BatchNorm2d, up_kwargs = {'mode': 'bilinear', 'align_corners': True}):
         super(StripPooling, self).__init__()
         self.pool1 = nn.AdaptiveAvgPool2d(pool_size[0])
@@ -49,22 +46,21 @@ class StripPooling(nn.Module):
                                 nn.ReLU(True))
         self.conv3 = nn.Sequential(nn.Conv2d(inter_channels*2, in_channels, 1, bias=False),
                                 norm_layer(in_channels))
-        # bilinear interpolate options
         self._up_kwargs = up_kwargs
 
-    def forward(self, x):#torch.Size([2, 32, 64, 128])
+    def forward(self, x):
         _, _, h, w = x.size()
-        x1 = self.conv1_1(x)#torch.Size([2, 8, 64, 128])
-        x2 = self.conv1_2(x)#torch.Size([2, 8, 64, 128])
-        x2_1 = self.conv2_0(x1)#torch.Size([2, 8, 64, 128])
+        x1 = self.conv1_1(x)
+        x2 = self.conv1_2(x)
+        x2_1 = self.conv2_0(x1)
         
-        x2_2 = F.interpolate(self.conv2_1(self.pool1(x1)), (h, w), **self._up_kwargs)#torch.Size([2, 8, 64, 128])
-        x2_3 = F.interpolate(self.conv2_2(self.pool2(x1)), (h, w), **self._up_kwargs)#torch.Size([2, 8, 64, 128])
-        x2_4 = F.interpolate(self.conv2_3(self.pool3(x2)), (h, w), **self._up_kwargs)#torch.Size([2, 8, 64, 128])
-        x2_5 = F.interpolate(self.conv2_4(self.pool4(x2)), (h, w), **self._up_kwargs)#torch.Size([2, 8, 64, 128])
-        x1 = self.conv2_5(F.relu_(x2_1 + x2_2 + x2_3))#torch.Size([2, 8, 64, 128])
-        x2 = self.conv2_6(F.relu_(x2_5 + x2_4))#torch.Size([2, 8, 64, 128])
-        out = self.conv3(torch.cat([x1, x2], dim=1))#torch.Size([2, 32, 64, 128])
+        x2_2 = F.interpolate(self.conv2_1(self.pool1(x1)), (h, w), **self._up_kwargs)
+        x2_3 = F.interpolate(self.conv2_2(self.pool2(x1)), (h, w), **self._up_kwargs)
+        x2_4 = F.interpolate(self.conv2_3(self.pool3(x2)), (h, w), **self._up_kwargs)
+        x2_5 = F.interpolate(self.conv2_4(self.pool4(x2)), (h, w), **self._up_kwargs)
+        x1 = self.conv2_5(F.relu_(x2_1 + x2_2 + x2_3))
+        x2 = self.conv2_6(F.relu_(x2_5 + x2_4))
+        out = self.conv3(torch.cat([x1, x2], dim=1))
         return F.relu_(x + out)
 from torch import Tensor
 
@@ -173,17 +169,17 @@ class LightAttention(SwinBlockSequence):
             self.down = nn.MaxPool2d(kernel_size=pre_downsample, stride=pre_downsample)
             self.up = nn.UpsamplingBilinear2d(scale_factor=pre_downsample)
 
-    def forward(self, x: Tensor) -> Tensor:#torch.Size([2, 128, 64, 128])
-        if self.pre_downsample > 0:#下采样
-            x = self.down(x)#torch.Size([2, 128, 32, 64])
-        x = self.in_transform(x)#torch.Size([2, 128, 32, 64])
+    def forward(self, x: Tensor) -> Tensor:
+        if self.pre_downsample > 0:
+            x = self.down(x)
+        x = self.in_transform(x)
         N, C, H, W = x.shape
-        x = x.permute(0, 2, 3, 1).contiguous().view(N, H * W, C)#torch.Size([2, 2048, 128])
+        x = x.permute(0, 2, 3, 1).contiguous().view(N, H * W, C)
         x, _, _, _ = super().forward(x, [H, W])
         x = self.out_transform(x)
         C = x.shape[-1]
         x = x.view(N, H, W, C).permute(0, 3, 1, 2).contiguous()
-        if self.pre_downsample > 0:#上采样
+        if self.pre_downsample > 0:
             x = self.up(x)
         return x
 
@@ -227,8 +223,8 @@ class ChannelAttention(nn.Module):
             nn.Conv2d(dim // reduction, dim, 1, padding=0, bias=True),
         )
 
-    def forward(self, x):#torch.Size([1, 32, 224, 224])
-        x_gap = self.gap(x)#torch.Size([1, 32, 1, 1])
+    def forward(self, x):
+        x_gap = self.gap(x)
         cattn = self.ca(x_gap)
         return cattn
 
@@ -241,9 +237,9 @@ class PixelAttention(nn.Module):
 
     def forward(self, x, pattn1):
         B, C, H, W = x.shape
-        x = x.unsqueeze(dim=2) # B, C, 1, H, W
-        pattn1 = pattn1.unsqueeze(dim=2) # B, C, 1, H, W
-        x2 = torch.cat([x, pattn1], dim=2) # B, C, 2, H, W
+        x = x.unsqueeze(dim=2) 
+        pattn1 = pattn1.unsqueeze(dim=2)
+        x2 = torch.cat([x, pattn1], dim=2) 
         x2 = Rearrange('b c t h w -> b (c t) h w')(x2)
         pattn2 = self.pa2(x2)
         pattn2 = self.sigmoid(pattn2)
@@ -258,17 +254,16 @@ class Fusion(nn.Module):
         self.conv = nn.Conv2d(dim, dim, 1, bias=True)
         self.sigmoid = nn.Sigmoid()
 
-    def forward(self, x, y):#torch.Size([1, 32, 224, 224]),torch.Size([1, 32, 224, 224])
-        initial = x + y#torch.Size([1, 32, 224, 224])
-        cattn = self.ca(initial)#torch.Size([1, 32, 1, 1])
-        sattn = self.sa(initial)#torch.Size([1, 1, 224, 224])
-        pattn1 = sattn + cattn#torch.Size([1, 32, 224, 224])
-        pattn2 = self.sigmoid(self.pa(initial, pattn1))#torch.Size([1, 32, 224, 224])
-        result = initial + pattn2 * x + (1 - pattn2) * y#torch.Size([1, 32, 224, 224])
+    def forward(self, x, y):
+        initial = x + y
+        cattn = self.ca(initial)
+        sattn = self.sa(initial)
+        pattn1 = sattn + cattn
+        pattn2 = self.sigmoid(self.pa(initial, pattn1))
+        result = initial + pattn2 * x + (1 - pattn2) * y
         result = self.conv(result)
         return result
 
-"""DEABlockTrain module and DECBlockTrain"""
 class DEABlockTrain(nn.Module):
     def __init__(self, conv, dim, kernel_size, reduction=8):
         super(DEABlockTrain, self).__init__()
