@@ -1,7 +1,9 @@
 # SCD-IGNet
 
 This repository implements a PyTorch re-implementation of the research paper: "**SCD-IGNet: Enhanced Semantic Segmentation of Low-Light Rainy Images via Symmetric Cross-Decoupling and Illumination Guidance**"
-
+<div align="center">
+  <img src="https://github.com/Liusir765832/SCD-IGNet/blob/master/img/p2.png">
+</div>
 
 
 ## Dataset
@@ -9,10 +11,14 @@ This repository implements a PyTorch re-implementation of the research paper: "*
 The Nightcity-fine dataset is derived from the paper "Disentangle then Parse: Night-time Semantic Segmentation with Illumination Disentanglement" and can be downloaded via this[Google Drive link](https://drive.google.com/file/d/1Ilj99NMAmkZIPQcVOd6cJebnKXjJ-Sit/view?usp=drive_link).
 
 The Nightcity-rain dataset was created by adding rain streaks to the Nightcity-fine dataset, and it's available for download through a [cloud storage link](). 
+<div align="center">
+  <img src="https://github.com/Liusir765832/SCD-IGNet/blob/master/img/p9.png">
+</div
 
- Additionally, we provide MatLab code for generating rain streaks, enabling users to add rain effects to any dataset. You can download the rain streak dataset via the [cloud storage link](), and then use the MatLab code in the "rain" folder to generate the low-light rainy dataset NightCity-rain based on the NightCity-fine dataset.
-
-
+Additionally, we provide MatLab code for generating rain streaks, enabling users to add rain effects to any dataset. You can download the rain streak dataset via the [cloud storage link](), and then use the MatLab code in the "rain" folder to generate the low-light rainy dataset NightCity-rain based on the NightCity-fine dataset.
+<div align="center">
+  <img src="https://github.com/Liusir765832/SCD-IGNet/blob/master/img/p2.png">
+</div
 
 ## Environment Setup
 
@@ -84,7 +90,9 @@ python custom-tools/swin2mmseg.py </path/to/pretrain> checkpoints/simmim_pretrai
 ```shell
 python custom-tools/train.py checkpoints/cfg/cfg.py
 ```
-
+<div align="center">
+  <img src="https://github.com/Liusir765832/SCD-IGNet/blob/master/img/p2.png">
+</div
 
 
 ## Test
