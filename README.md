@@ -56,7 +56,7 @@ pip install -r requirements.txt
 ├── checkpoints
 │   ├── cfg
 |   └── pth
-|		 └── simmim_pretrain__swin_base__img192_window6__800ep.pth
+|		└── simmim_pretrain__swin_base__img192_window6__800ep.pth
 ├── custom
 ├── custom-tools
 │   ├── dist_test.sh
