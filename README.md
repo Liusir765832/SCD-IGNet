@@ -17,7 +17,7 @@ The Nightcity-rain dataset was created by adding rain streaks to the Nightcity-f
 
 Additionally, we provide MatLab code for generating rain streaks, enabling users to add rain effects to any dataset. You can download the rain streak dataset via the [cloud storage link](), and then use the MatLab code in the "rain" folder to generate the low-light rainy dataset NightCity-rain based on the NightCity-fine dataset.
 <div align="center">
-  <img src="https://github.com/Liusir765832/SCD-IGNet/blob/master/img/p6.png">
+  <img src="https://github.com/Liusir765832/SCD-IGNet/blob/master/img/p6e.png">
 </div>
 
 ## Environment Setup
