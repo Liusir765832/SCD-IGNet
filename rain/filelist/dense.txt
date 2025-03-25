@@ -1,0 +1,2 @@
+newout/strChicago_0002-type5-dense.png
+newout/strChicago_0005-type5-dense.png
