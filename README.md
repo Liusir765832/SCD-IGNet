@@ -100,7 +100,7 @@ python custom-tools/train.py checkpoints/cfg/cfg.py
 Execute tests using:
 
 ```shell
-python custom-tools/test.py checkpoints/night/cfg.py checkpoint.pth --eval mIoU --aug-test
+python custom-tools/test.py checkpoints/night/cfg.py savemodel.pth --eval mIoU --aug-test
 ```
 
 
