@@ -67,6 +67,9 @@ pip install -r requirements.txt
 │   └── nightcity-rain
 │       ├── train
 │       └── val
+│   └── nightcity-fine
+│       ├── train
+│       └── val
 ├── mmseg
 ├── readme.md
 ├── requirements.txt
