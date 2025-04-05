@@ -1,6 +1,6 @@
 # SCD-IGNet
 
-This repository implements a PyTorch re-implementation of the research paper: "**SCD-IGNet: Enhanced Semantic Segmentation of Low-Light Rainy Images via Symmetric Cross-Decoupling and Illumination Guidance**" The work is currently being submitted to [The Visual Computer](https://link.springer.com/journal/371).
+This repository implements a PyTorch re-implementation of the research paper: "**SCD-IGNet: Enhanced Semantic Segmentation of Low-Light Rainy Images via Symmetric Cross-Decoupling and Illumination Guidance**". The work is currently being submitted to [The Visual Computer](https://link.springer.com/journal/371).
 <div align="center">
   <img src="https://github.com/Liusir765832/SCD-IGNet/blob/master/img/p2.png">
 </div>
